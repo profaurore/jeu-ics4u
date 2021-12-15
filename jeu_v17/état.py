@@ -1,0 +1,39 @@
+class État:
+    def __init__(self):
+        # Modes
+        self.mode_débogage = False
+
+        # Cache des images
+        self.tuiles = None
+        self.images = None
+
+        # Données du jeu
+        self.terrain = None
+        self.ecs = None
+
+
+def actualiser(état):
+    for système in état.ecs.systèmes:
+        système(état)
+
+
+def charger_monde(fichier):
+    with open(fichier, 'r', encoding='utf-8') as f:
+        données = f.read()
+
+    lignes = données.splitlines()
+    lignes = list(filter(len, lignes))
+    lignes = list(map(str.strip, lignes))
+
+    terrain = []
+    for ligne in lignes:
+        rangée = []
+        terrain.append(rangée)
+
+        ligne = ligne.split(',')
+        for tuile in ligne:
+            rangée.append(int(tuile))
+
+    terrain = [list(r) for r in zip(*terrain)]
+
+    return terrain
